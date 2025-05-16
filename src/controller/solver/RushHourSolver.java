@@ -1,4 +1,6 @@
-abstract class RushHourSolver {
+package controller.solver;
+
+public abstract class RushHourSolver {
     protected GameState initialState;
     protected int visitedNodesCount;
     protected long executionTime;

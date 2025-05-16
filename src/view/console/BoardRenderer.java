@@ -1,3 +1,5 @@
+package view.console;
+
 public class BoardRenderer {
     public String renderBoard(Board board) {
 

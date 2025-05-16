@@ -1,3 +1,5 @@
+package controller.solver;
+
 public class AStarSolver extends RushHourSolver {
     private Heuristic heuristic;
 

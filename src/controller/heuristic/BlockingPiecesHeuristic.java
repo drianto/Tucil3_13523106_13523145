@@ -1,3 +1,5 @@
+package controller.heuristic;
+
 public class BlockingPiecesHeuristic implements Heuristic {
      // Fields
 

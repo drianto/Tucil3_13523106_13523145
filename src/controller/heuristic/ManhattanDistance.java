@@ -1,3 +1,5 @@
+package controller.heuristic;
+
 public class ManhattanDistance implements Heuristic{
      // Fields
     

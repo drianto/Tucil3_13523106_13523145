@@ -1,3 +1,5 @@
+package view.gui;
+
 import javax.swing.JLabel;
 
 public class StatusPanel {

@@ -1,7 +1,7 @@
 public class AStarSolver extends RushHourSolver {
     private Heuristic heuristic;
 
-    public GreedyBestFirstSearchSolver(GameState initialState, Heuristic heuristic) {
+    public AStarSolver(GameState initialState, Heuristic heuristic) {
 
     }
 

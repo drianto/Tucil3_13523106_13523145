@@ -1,8 +1,8 @@
-public class BearSearchSolver {
+public class BeamSearchSolver {
     private Heuristic heuristic;
     private int beamWidth;
 
-    public GreedyBestFirstSearchSolver(GameState initialState, Heuristic heuristic) {
+    public BeamSearchSolver(GameState initialState, Heuristic heuristic) {
 
     }
 

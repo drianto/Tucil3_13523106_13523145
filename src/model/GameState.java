@@ -1,19 +1,26 @@
 package model;
 
+import model.core.Board;
+import model.core.Move;
+
 import java.util.List;
 
 public class GameState {
     private final int cost;
-    //  private Board board;
-    //  private List<Move> moves; 
+     private Board board;
+     private List<Move> moves; 
 
      // Constructor
     public GameState() {
         this.cost = 0;
+        this.board = null;
+        this.moves = null;
     }
 
-    public GameState(int cost) { // Board board, List<Move> moves
+    public GameState(int cost, Board board, List<Move> moves) { // Board board, List<Move> moves
         this.cost = cost;
+        this.board = board;
+        this.moves = moves;
     }
 
      // Methods
@@ -25,13 +32,13 @@ public class GameState {
         return false;
     }
 
-    // public public List<Move> getMoves() {
-    //     return this.moves;
-    // }
+    public List<Move> getMoves() {
+        return this.moves;
+    }
 
-    // public Board getBoard() {
-    //     return this.board;
-    // }
+    public Board getBoard() {
+        return this.board;
+    }
 
     public int getCost() {
         return this.cost;

@@ -18,10 +18,10 @@ public class Position {
     }
 
     public boolean equals() {
-
+        return true;
     }
 
     public int hashCode() {
-
+        return 1;
     }
 }

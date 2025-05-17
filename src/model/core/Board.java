@@ -18,46 +18,46 @@ public class Board {
     }
 
     public boolean MovePiece(Piece piece, Direction direction) {
-        
+        return true;
     }
 
     public boolean isOccupied(Position position) {
-
+        return true;
     }
 
     public boolean isPrimaryPieceAtExit() {
-
+        return true;
     }
 
     public ArrayList<Move> getValidMoves() {
-
+        return null;
     }
 
     public Board clone() {
-
+        return null;
     }
 
     public List<Piece> getPieces() {
-
+        return null;
     }
 
     public Piece getPrimaryPiece() {
-
+        return null;
     }
-
+    
     public Piece getPieceById(char id) {
-        
+        return null;   
     }
 
     public int getWidth() {
-
+        return 1;
     }
 
     public int getHeight() {
-
+        return 1;   
     }
 
-    public getExitPosition() {
-        
+    public Position getExitPosition() {
+        return null;
     }
 }

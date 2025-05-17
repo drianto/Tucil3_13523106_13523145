@@ -2,7 +2,12 @@ package view.gui;
 
 import java.util.Map;
 
-public class BoardPanel {
+import javax.swing.*;
+import java.awt.*;
+
+import model.core.Board;
+
+public class BoardPanel extends JPanel {
     private Board board;
     private int cellSize;
     private Map<Character, Color> PieceColor;

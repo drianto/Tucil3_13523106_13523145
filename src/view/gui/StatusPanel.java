@@ -1,12 +1,15 @@
 package view.gui;
 
-import javax.swing.JLabel;
+import javax.swing.*;
+// import java.awt.*;
 
-public class StatusPanel {
+import controller.SolutionResult;
+
+public class StatusPanel  extends JPanel{
     private JLabel statusLabel;
     private JLabel timeLabel;
     private JLabel nodesLabel;
-    private Jlabel movesLabel;
+    private JLabel movesLabel;
 
     public StatusPanel() {
 

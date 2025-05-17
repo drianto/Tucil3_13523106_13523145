@@ -18,22 +18,22 @@ public class SolutionResult {
     }
 
     public boolean isSolved() {
-        
+        return true;
     }
-
+    
     public ArrayList<Move> getMoves() {
-
+        return null;
     }
 
     public int getVisitedNodesCount() {
-        
+        return 1;
     }
 
     public long getExecutionTime() {
-
+        return 1L;
     }
 
     public List<Board> getBoardStates() {
-        
+        return null;
     }
 }

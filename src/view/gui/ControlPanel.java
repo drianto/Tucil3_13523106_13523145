@@ -1,10 +1,8 @@
 package view.gui;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JSlider;
+import javax.swing.*;
 
-public class ControlPanel {
+public class ControlPanel extends JPanel {
     private JComboBox algorithmSelector;
     private JComboBox heuristicSelector;
     private JButton loadButton;
@@ -30,14 +28,14 @@ public class ControlPanel {
     }
 
     public String getSelectedAlgorithm() {
-
+        return null;
     }
-
+    
     public String getSelectedHeuristic() {
-        
+        return null;
     }
-
+    
     public int getAnimationSpeed() {
-        
+        return 1;
     }
 }

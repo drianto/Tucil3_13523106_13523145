@@ -1,5 +1,8 @@
 package utils;
 
+import model.core.Board;
+import model.core.Piece;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +15,7 @@ public class FileHandler {
         
     }
 
-    priavet Board parseBoardConfig(List<String> lines) {
+    private Board parseBoardConfig(List<String> lines) {
 
     }
 

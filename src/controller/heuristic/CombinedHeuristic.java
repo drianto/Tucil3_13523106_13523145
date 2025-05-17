@@ -1,5 +1,7 @@
 package controller.heuristic;
 
+import model.GameState;
+
 import java.util.ArrayList;
 
 public class CombinedHeuristic implements Heuristic {

@@ -1,5 +1,8 @@
 package controller;
 
+import model.core.Board;
+import model.core.Move;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +13,7 @@ public class SolutionResult {
     private long executionTime;
     private ArrayList<Board> boardStates;
 
-    public SolutionResult(boolean solved, List<Move< moves, int visitedNodesCount, long executionTime, List>Board> boardStates) {
+    public SolutionResult(boolean solved, List<Move> moves, int visitedNodesCount, long executionTime, List<Board> boardStates) {
 
     }
 

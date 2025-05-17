@@ -1,5 +1,7 @@
 package controller.heuristic;
 
+import model.GameState;
+
 public class BlockingPiecesHeuristic implements Heuristic {
      // Fields
 

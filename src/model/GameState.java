@@ -1,9 +1,8 @@
 package model;
 
+import java.util.List;
 import model.core.Board;
 import model.core.Move;
-
-import java.util.List;
 
 public class GameState {
     private final int cost;
@@ -17,7 +16,7 @@ public class GameState {
         this.moves = null;
     }
 
-    public GameState(int cost, Board board, List<Move> moves) { // Board board, List<Move> moves
+    public GameState(int cost, Board board, List<Move> moves) {
         this.cost = cost;
         this.board = board;
         this.moves = moves;
@@ -26,7 +25,7 @@ public class GameState {
      // Methods
     public List<GameState> getSuccessors() {
         return null;
-    }    
+    }
 
     public Boolean isGoalState() {
         return false;

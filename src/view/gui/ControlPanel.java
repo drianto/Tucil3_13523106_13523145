@@ -1,6 +1,7 @@
 package view.gui;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ControlPanel extends JPanel {
     private JComboBox algorithmSelector;
@@ -12,7 +13,10 @@ public class ControlPanel extends JPanel {
     private RushHourGUI parent;
 
     public ControlPanel(RushHourGUI parent) {
-
+        this.parent = parent;
+        setLayout(new FlowLayout()); // Contoh layout sederhana
+        // Inisialisasi komponen (JButton, JComboBox, dll.) akan ditambahkan di sini
+        add(new JLabel("Control Panel Area")); // Placeholder
     }
 
     public void initializeComponents() {

@@ -1,9 +1,8 @@
 package view.gui;
 
-import javax.swing.*;
-// import java.awt.*;
-
 import controller.SolutionResult;
+import java.awt.*;
+import javax.swing.*;
 
 public class StatusPanel  extends JPanel{
     private JLabel statusLabel;
@@ -12,7 +11,9 @@ public class StatusPanel  extends JPanel{
     private JLabel movesLabel;
 
     public StatusPanel() {
-
+        setLayout(new FlowLayout(FlowLayout.LEFT)); // Contoh layout
+        // Inisialisasi JLabel akan ditambahkan di sini
+        add(new JLabel("Status: Idle")); // Placeholder
     }
 
     public void updateStatus(String status) {

@@ -16,46 +16,65 @@ public class Piece {
         this.isPrimary = isPrimary;
     }
 
-    // public boolean move(Direction direction) {
-    //     if 
-    // }
+    public boolean move(Direction direction, Board board) {
+        if (!canMove(direction, board)) return false;
 
-    // public boolean canMove(Direction direction, Board board) {
-    //     switch (orientation) {
-    //         case VERTICAL:
-    //                 switch (direction) {
-    //                     case UP:
-    //                             for (int i = 0; i < this.positions.size(); i++) {
-                                    
-    //                             }
-    //                         break;
+        int x = 0, y = 0;
+        switch (direction) {
+            case UP:    
+                    y = -1; 
+                break;
+            case DOWN:  
+                    y =  1; 
+                break;
+            case LEFT:  
+                    x = -1; 
+                break;
+            case RIGHT: 
+                    x =  1; 
+                break;
+        }
 
-    //                     case DOWN:
-                             
-    //                         break;
-    //                     default:
-    //                         break;
-    //                 }
-    //             break;
-            
-    //         case HORIZONTAL:
-    //                 switch (direction) {
-    //                     case RIGHT:
-                            
-    //                         break;
-                        
-    //                     case LEFT:
+        for (int i = 0; i < positions.size(); i++) {
+            Position p = positions.get(i);
+            positions.set(i, new Position(p.getX() + x, p.getY() + y));
+        }
+        return true;
+    }
 
-    //                         break;
-    //                     default:
-    //                         break;
-    //                 }
-    //             break;
 
-    //         default:
-    //             break;
-    //     }
-    // }
+    public boolean canMove(Direction direction, Board board) {
+        Position edge;
+        switch (direction) {
+            case UP:
+                if (orientation != Orientation.VERTICAL) return false;
+                edge = positions.get(0);             
+                return edge.getY() > 0 &&
+                    !board.isOccupied(new Position(edge.getX(), edge.getY() - 1));
+
+            case DOWN:
+                if (orientation != Orientation.VERTICAL) return false;
+                edge = positions.get(positions.size() - 1); 
+                return edge.getY() < board.getHeight() - 1 &&
+                    !board.isOccupied(new Position(edge.getX(), edge.getY() + 1));
+
+            case LEFT:
+                if (orientation != Orientation.HORIZONTAL) return false;
+                edge = positions.get(0);                  
+                return edge.getX() > 0 &&
+                    !board.isOccupied(new Position(edge.getX() - 1, edge.getY()));
+
+            case RIGHT:
+                if (orientation != Orientation.HORIZONTAL) return false;
+                edge = positions.get(positions.size() - 1); 
+                return edge.getX() < board.getWidth() - 1 &&
+                    !board.isOccupied(new Position(edge.getX() + 1, edge.getY()));
+
+            default:
+                return false;
+        }
+    }
+
 
     public List<Position> getPositions() {
         return this.positions;

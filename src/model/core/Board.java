@@ -49,7 +49,7 @@ public class Board {
     public Piece getPrimaryPiece() {
         return this.primaryPiece;
     }
-
+    
     public Piece getPieceById(char id) {
         for (int i = 0; i < pieces.size(); i++) {
             if (pieces.get(i).getId() == id) {

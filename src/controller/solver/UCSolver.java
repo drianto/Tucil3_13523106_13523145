@@ -1,3 +1,5 @@
+package controller.solver;
+
 public class UCSolver extends RushHourSolver {
     public UCSolver(GameState initialState) {
 

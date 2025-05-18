@@ -1,3 +1,5 @@
+package view.gui;
+
 import java.util.Map;
 
 public class BoardPanel {

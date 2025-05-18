@@ -1,3 +1,5 @@
+package model.core;
+
 public class Move {
      // Fields
      private final char pieceId;

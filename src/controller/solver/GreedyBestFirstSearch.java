@@ -1,3 +1,5 @@
+package controller.solver;
+
 public class GreedyBestFirstSearch extends RushHourSolver{
     private Heuristic heuristic;
 

@@ -1,3 +1,5 @@
+package controller.solver;
+
 public class BeamSearchSolver {
     private Heuristic heuristic;
     private int beamWidth;

@@ -17,47 +17,57 @@ public class Board {
         this.exitPosition = exitPosition;
     }
 
-    public boolean MovePiece(Piece piece, Direction direction) {
-        return true;
-    }
+    // public boolean movePiece(Piece piece, Direction direction) {
+        
+    // }
 
-    public boolean isOccupied(Position position) {
-        return true;
-    }
+    // public boolean isOccupied(Position position) {
 
-    public boolean isPrimaryPieceAtExit() {
-        return true;
-    }
+    // }
 
-    public ArrayList<Move> getValidMoves() {
-        return null;
-    }
+    // public boolean isPrimaryPieceAtExit() {
+    //     List<Position> tempPositions = primaryPiece.getPositions();
+    //     for (int i = 0; i < tempPositions.size(); i++) {
+    //         if ()
+    //     }
+    //     return false;
+    // }
+
+    // public ArrayList<Move> getValidMoves() {
+        
+    // }
 
     public Board clone() {
-        return null;
+        Board newBoard = new Board(this.width, this.height, this.pieces, this.exitPosition);
+        return newBoard;
     }
 
     public List<Piece> getPieces() {
-        return null;
+        return this.pieces;
     }
 
     public Piece getPrimaryPiece() {
-        return null;
+        return this.primaryPiece;
     }
     
     public Piece getPieceById(char id) {
-        return null;   
+        for (int i = 0; i < pieces.size(); i++) {
+            if (pieces.get(i).getId() == id) {
+                return pieces.get(i);
+            } 
+        }
+        return null;
     }
 
     public int getWidth() {
-        return 1;
+        return this.width;
     }
 
     public int getHeight() {
-        return 1;   
+        return this.height;
     }
 
     public Position getExitPosition() {
-        return null;
+        return this.exitPosition;
     }
 }

@@ -58,6 +58,6 @@ Untuk Linux:
 
 <table border="1" cellspacing="0" cellpadding="8"> 
   <tr> <th>NIM</th> <th>Nama</th> </tr> 
-  <tr> <td>13523106</td> <td>Athian Nugraha Muarajuang</td> </tr> </table>
-  <tr> <td>13523145</td> <td>Andri Nurdianto</td> </tr> 
+  <tr> <td>13523106</td> <td>Athian Nugraha Muarajuang</td> </tr> 
+  <tr> <td>13523145</td> <td>Andri Nurdianto</td> </tr> </table>
 </div>

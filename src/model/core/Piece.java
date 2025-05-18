@@ -3,10 +3,6 @@ package model.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.core.Position;
-import model.core.Orientation;
-import model.core.Direction;
-
 public class Piece {
     private char id;
     private ArrayList <Position> positions;
@@ -14,30 +10,71 @@ public class Piece {
     private boolean isPrimary;
 
     public Piece(char id, ArrayList<Position> positions, Orientation orientation, boolean isPrimary) {
-        
+        this.id = id;
+        this.positions = positions;
+        this.orientation = orientation;
+        if (id == 'p') {
+            this.isPrimary = true;
+        } else {
+            this.isPrimary = false;
+        }
+
     }
 
-    public void move(Direction direction) {
-        
-    }
+    // public boolean move(Direction direction) {
+    //     if 
+    // }
 
-    public boolean canMove(Direction direction) {
-        return true;
-    }
+    // public boolean canMove(Direction direction, Board board) {
+    //     switch (orientation) {
+    //         case VERTICAL:
+    //                 switch (direction) {
+    //                     case UP:
+    //                             for (int i = 0; i < this.positions.size(); i++) {
+                                    
+    //                             }
+    //                         break;
+
+    //                     case DOWN:
+                             
+    //                         break;
+    //                     default:
+    //                         break;
+    //                 }
+    //             break;
+            
+    //         case HORIZONTAL:
+    //                 switch (direction) {
+    //                     case RIGHT:
+                            
+    //                         break;
+                        
+    //                     case LEFT:
+
+    //                         break;
+    //                     default:
+    //                         break;
+    //                 }
+    //             break;
+
+    //         default:
+    //             break;
+    //     }
+    // }
 
     public List<Position> getPositions() {
-        return null;
+        return this.positions;
     }
 
     public Orientation getOrientation() {
-        return null;
+        return this.orientation;
     }
 
     public boolean isPrimary() {
-        return true;
+        return this.isPrimary;
     }
 
     public char getId() {
-        return 'i';
+        return this.id;
     }
 }

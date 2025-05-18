@@ -1,7 +1,7 @@
 package controller.solver;
 
-import model.GameState;
 import controller.SolutionResult;
+import model.GameState;
 
 public abstract class RushHourSolver {
     protected GameState initialState;
@@ -10,6 +10,8 @@ public abstract class RushHourSolver {
 
     public RushHourSolver(GameState initialState) {
         this.initialState = initialState;
+        this.visitedNodesCount = 0;
+        this.executionTime = 0;
     }
 
     public int getVisitedNodesCount() {

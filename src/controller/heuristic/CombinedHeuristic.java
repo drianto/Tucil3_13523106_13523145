@@ -1,8 +1,7 @@
 package controller.heuristic;
 
-import model.GameState;
-
 import java.util.ArrayList;
+import model.GameState;
 
 public class CombinedHeuristic implements Heuristic {
      // Fields
@@ -16,8 +15,12 @@ public class CombinedHeuristic implements Heuristic {
 
      // Methods
     @Override
-    public void calculate(GameState gameState) {
-    
+    public int calculate(GameState gameState) {
+        return 0;
     }
     
+    @Override
+    public String getName() {
+        return "Combined Heuristic";
+    }
 }

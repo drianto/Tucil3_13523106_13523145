@@ -1,5 +1,6 @@
 package controller.solver;
 
+import controller.SolutionResult;
 import controller.heuristic.Heuristic;
 import model.GameState;
 
@@ -12,10 +13,10 @@ public class AStarSolver extends RushHourSolver {
     }
 
     public SolutionResult solve() {
-        
+        return null;
     }
 
     public String getName() {
-        
+        return "A* Solver with " + heuristic.getName();
     }
 }

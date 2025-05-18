@@ -10,10 +10,14 @@ public class ManhattanDistance implements Heuristic{
      
     }
 
+    // Methods
     @Override
-    public void calculate(GameState gameState){
-          
+    public int calculate(GameState gameState){
+        return 0;
     }
-     // Methods
     
+    @Override 
+    public String getName() {
+        return "Manhattan Distance Heuristic";
+    }
 }

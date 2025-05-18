@@ -1,5 +1,6 @@
 package controller.solver;
 
+import controller.SolutionResult;
 import controller.heuristic.Heuristic;
 import model.GameState;
 
@@ -14,10 +15,10 @@ public class BeamSearchSolver extends RushHourSolver {
     }
 
     public SolutionResult solve() {
-        
+        return null; 
     }
 
     public String getName() {
-        
+        return null;
     }
 }

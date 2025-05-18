@@ -12,8 +12,13 @@ public class BlockingPiecesHeuristic implements Heuristic {
 
      // Methods
     @Override
-    public void calculate(GameState gameState) {
-    
+    public int calculate(GameState gameState) {
+        return 0;
+    }
+
+    @Override
+    public String getName() {
+        return "Blocking Pieces Heuristic";
     }
     
 }

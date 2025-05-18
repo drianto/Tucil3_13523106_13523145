@@ -26,7 +26,7 @@ public class Position {
 
         Position position = (Position) o;
 
-        return position.x == this.x && position.y == this.y;
+        return position.getX() == this.x && position.getY() == this.y;
     }
 
     @Override

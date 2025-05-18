@@ -13,30 +13,68 @@ public class Piece {
         this.id = id;
         this.positions = positions;
         this.orientation = orientation;
-        this.isPrimary = isPrimary;
+        if (id == 'p') {
+            this.isPrimary = true;
+        } else {
+            this.isPrimary = false;
+        }
+
     }
 
-    public boolean move(Direction direction) {
-        if 
-    }
+    // public boolean move(Direction direction) {
+    //     if 
+    // }
 
-    public boolean canMove(Direction direction) {
-        
-    }
+    // public boolean canMove(Direction direction, Board board) {
+    //     switch (orientation) {
+    //         case VERTICAL:
+    //                 switch (direction) {
+    //                     case UP:
+    //                             for (int i = 0; i < this.positions.size(); i++) {
+                                    
+    //                             }
+    //                         break;
+
+    //                     case DOWN:
+                             
+    //                         break;
+    //                     default:
+    //                         break;
+    //                 }
+    //             break;
+            
+    //         case HORIZONTAL:
+    //                 switch (direction) {
+    //                     case RIGHT:
+                            
+    //                         break;
+                        
+    //                     case LEFT:
+
+    //                         break;
+    //                     default:
+    //                         break;
+    //                 }
+    //             break;
+
+    //         default:
+    //             break;
+    //     }
+    // }
 
     public List<Position> getPositions() {
-
+        return this.positions;
     }
 
-    public getOrientation() {
-
+    public Orientation getOrientation() {
+        return this.orientation;
     }
 
     public boolean isPrimary() {
-
+        return this.isPrimary;
     }
 
     public char getId() {
-
+        return this.id;
     }
 }

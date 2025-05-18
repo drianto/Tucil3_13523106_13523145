@@ -1,6 +1,7 @@
 package model;
 
 import java.util.List;
+import java.util.Objects;
 import model.core.Board;
 import model.core.Move;
 
@@ -45,11 +46,11 @@ public class GameState {
 
     @Override
     public boolean equals(Object o) {
-        return true;
+        return this.board.equals(((GameState) o).getBoard()) && this.moves.equals(((GameState) o).getMoves());
     }
 
     @Override
     public int hashCode() {
-        return -1;
+        return Objects.hash(this.board, this.moves);
     }
  }

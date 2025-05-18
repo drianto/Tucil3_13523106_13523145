@@ -1,10 +1,9 @@
 package controller;
 
-import model.core.Board;
-import model.core.Move;
-
 import java.util.ArrayList;
 import java.util.List;
+import model.core.Board;
+import model.core.Move;
 
 public class SolutionResult {
     private boolean solved;
@@ -18,22 +17,22 @@ public class SolutionResult {
     }
 
     public boolean isSolved() {
-        return true;
+        return solved;
     }
     
     public ArrayList<Move> getMoves() {
-        return null;
+        return this.moves;
     }
 
     public int getVisitedNodesCount() {
-        return 1;
+        return this.visitedNodesCount;
     }
 
     public long getExecutionTime() {
-        return 1L;
+        return this.executionTime;
     }
 
     public List<Board> getBoardStates() {
-        return null;
+        return this.boardStates;
     }
 }

@@ -21,9 +21,16 @@ public class Board {
         
     // }
 
-    // public boolean isOccupied(Position position) {
-
-    // }
+    public boolean isOccupied(Position position) {
+        for(int i = 0; i < pieces.size(); i++) {
+            for(int j = 0; j < pieces.get(i).getPositions().size(); j++) {
+                if (pieces.get(i).getPositions().get(j).getX() == position.getX() && pieces.get(i).getPositions().get(j).getY() == position.getY()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }   
 
     // public boolean isPrimaryPieceAtExit() {
     //     List<Position> tempPositions = primaryPiece.getPositions();

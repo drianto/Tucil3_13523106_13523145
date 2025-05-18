@@ -13,12 +13,7 @@ public class Piece {
         this.id = id;
         this.positions = positions;
         this.orientation = orientation;
-        if (id == 'p') {
-            this.isPrimary = true;
-        } else {
-            this.isPrimary = false;
-        }
-
+        this.isPrimary = isPrimary;
     }
 
     // public boolean move(Direction direction) {

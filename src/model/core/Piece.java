@@ -10,11 +10,14 @@ public class Piece {
     private boolean isPrimary;
 
     public Piece(char id, ArrayList<Position> positions, Orientation orientation, boolean isPrimary) {
-
+        this.id = id;
+        this.positions = positions;
+        this.orientation = orientation;
+        this.isPrimary = isPrimary;
     }
 
-    public void move(Direction direction) {
-        
+    public boolean move(Direction direction) {
+        if 
     }
 
     public boolean canMove(Direction direction) {

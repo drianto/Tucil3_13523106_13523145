@@ -27,6 +27,8 @@ public class GameState implements Comparable<GameState> { // Ditambahkan Compara
         this.cost = cost;
         this.board = board;
         this.moves = moves;
+        this.hCost = Integer.MAX_VALUE;
+        this.fCost = Integer.MAX_VALUE;
     }
 
     // Methods
@@ -83,6 +85,14 @@ public class GameState implements Comparable<GameState> { // Ditambahkan Compara
 
     public int getCost() {
         return this.cost;
+    }
+
+    public int gethCost() {
+        return this.hCost;
+    }
+
+    public int getfCost() {
+        return this.fCost;
     }
 
     @Override

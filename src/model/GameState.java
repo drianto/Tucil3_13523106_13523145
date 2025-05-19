@@ -11,12 +11,16 @@ public class GameState implements Comparable<GameState> { // Ditambahkan Compara
     private final int cost;
     private final Board board;
     private final List<Move> moves;
+    private transient int hCost; // Nilai heuristik (sebaiknya transient)
+    private transient int fCost; // fCost = gCost + hCost (sebaiknya transient)
 
     // Constructor
     public GameState() {
         this.cost = 0;
         this.board = null;
         this.moves = new ArrayList<>();
+        this.hCost = Integer.MAX_VALUE;
+        this.fCost = Integer.MAX_VALUE;
     }
 
     public GameState(int cost, Board board, List<Move> moves) {
@@ -60,6 +64,15 @@ public class GameState implements Comparable<GameState> { // Ditambahkan Compara
         return this.board.isPrimaryPieceAtExit();
     }
 
+    public void setHeuristicCosts(int hCost) {
+        this.hCost = hCost;
+        if (this.cost == Integer.MAX_VALUE || hCost == Integer.MAX_VALUE) {
+            this.fCost = Integer.MAX_VALUE;
+        } else {
+            this.fCost = this.cost + hCost; // this.cost adalah gCost
+        }
+    }
+
     public List<Move> getMoves() {
         return new ArrayList<>(this.moves);
     }
@@ -89,8 +102,10 @@ public class GameState implements Comparable<GameState> { // Ditambahkan Compara
 
     @Override
     public int compareTo(GameState other) {
-        // Membandingkan berdasarkan biaya (jumlah langkah) untuk PriorityQueue di UCS.
-        // Untuk A*, perbandingan harus berdasarkan f-cost (g-cost + h-cost).
-        return Integer.compare(this.cost, other.cost);
+        int fCompare = Integer.compare(this.fCost, other.fCost);
+        if (fCompare == 0) {
+            return Integer.compare(this.cost, other.cost);
+        }
+        return fCompare;
     }
 }

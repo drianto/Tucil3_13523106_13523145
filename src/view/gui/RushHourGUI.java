@@ -378,21 +378,4 @@ public class RushHourGUI {
         // Jika tidak berjalan, kecepatan akan diambil saat animasi dimulai berikutnya
         System.out.println("Kecepatan animasi diatur ke: " + speed + "ms");
     }
-
-
-    public static void main(String[] args) {
-        // Atur Look and Feel untuk tampilan yang lebih modern (opsional)
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            System.err.println("Gagal mengatur Look and Feel sistem.");
-        }
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new RushHourGUI();
-            }
-        });
-    }
 }

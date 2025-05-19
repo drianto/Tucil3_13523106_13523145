@@ -2,8 +2,12 @@
 package controller.solver;
 
 import controller.SolutionResult;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 import model.GameState;
-import java.util.function.Consumer; 
+import model.core.Board;
+import model.core.Move; 
 
 public abstract class RushHourSolver {
     protected GameState initialState;
@@ -47,6 +51,31 @@ public abstract class RushHourSolver {
         return this.executionTime;
     }
 
+	public List<Board> reconstructBoardStates(GameState finalState) {
+		List<Board> boardStatesPath = new ArrayList<>();
+		List<Move> moves = finalState.getMoves();
+		
+		if (this.initialState == null || this.initialState.getBoard() == null) {
+			 System.err.println("Solver Error: Initial state or board is null during board state reconstruction.");
+			return boardStatesPath; 
+		}
+
+		Board currentIterationBoard = this.initialState.getBoard().clone(); 
+
+		for (Move move : moves) {
+			Board nextBoardState = currentIterationBoard.clone(); 
+			boolean success = nextBoardState.movePiece(move.getPieceId(), move.getDirection());
+			if(success) {
+				boardStatesPath.add(nextBoardState);
+				currentIterationBoard = nextBoardState; 
+			} else {
+				 System.err.println("Solver Warning: Failed to apply move during board state reconstruction. Move: " + move.getPieceId() + " " + move.getDirection());
+				 boardStatesPath.add(currentIterationBoard.clone()); 
+			}
+		}
+		return boardStatesPath;
+	}
+    
     public abstract SolutionResult solve();
     public abstract String getName();
 }

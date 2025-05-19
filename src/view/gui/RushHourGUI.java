@@ -5,15 +5,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList; // Diperlukan untuk GameState
+import java.util.ArrayList;
+import java.util.List; // Diperlukan untuk List<Integer> di process()
+import java.util.function.Consumer;
 
 import model.core.Board;
-import model.GameState; // Diperlukan untuk membuat GameState
-import model.core.Move;  // Diperlukan untuk GameState dan SolutionResult
+import model.GameState;
+import model.core.Move; // Diperlukan untuk SolutionResult.getMoves()
 import controller.SolutionResult;
 import controller.solver.*; // Import semua solver
 import controller.heuristic.*; // Import semua heuristic
-import utils.FileHandler; // Import FileHandler
+import utils.FileHandler;
 
 public class RushHourGUI {
     private JFrame frame;
@@ -207,45 +209,72 @@ public class RushHourGUI {
         }
     }
 
-    /**
-     * Menjalankan proses penyelesaian menggunakan solver yang diberikan.
-     * Menggunakan SwingWorker agar GUI tetap responsif.
-     * @param solver Instance solver yang akan digunakan.
-     */
     public void solvePuzzle(RushHourSolver solver) {
         if (solver == null) {
             statusPanel.updateStatus("Solver tidak valid.");
             return;
         }
 
-        statusPanel.updateStatus("Menyelesaikan (" + solver.getName() + ")...");
+        statusPanel.updateStatus("Menyelesaikan (" + solver.getName() + ")... Node: 0");
         controlPanel.enableSolveButton(false);
         controlPanel.enableAnimateButton(false);
+        controlPanel.enableLoadButton(false);
 
-        SwingWorker<SolutionResult, Void> worker = new SwingWorker<SolutionResult, Void>() {
+        SwingWorker<SolutionResult, Integer> worker = new SwingWorker<SolutionResult, Integer>() {
             @Override
             protected SolutionResult doInBackground() throws Exception {
-                // PENTING: Pastikan metode solve() di implementasi solver (A*, UCS, dll.)
-                // sudah diimplementasikan dengan benar dan mengembalikan SolutionResult.
-                // Saat ini, di file yang Anda berikan, metode solve() di solver mengembalikan null.
+                // --- AWAL Perubahan untuk Progress Reporting (FIXED) ---
+                // Membuat lambda yang akan memanggil metode publish() dari instance SwingWorker ini
+                Consumer<Integer> progressCallback = data -> publish(data);
+                // Mengatur callback ini pada solver
+                solver.setProgressEventConsumer(progressCallback);
+                // --- AKHIR Perubahan untuk Progress Reporting (FIXED) ---
+                
                 return solver.solve();
+            }
+
+            @Override
+            protected void process(List<Integer> chunks) {
+                if (chunks != null && !chunks.isEmpty()) {
+                    Integer latestVisitedNodesCount = chunks.get(chunks.size() - 1);
+                    statusPanel.updateStatus("Menyelesaikan (" + solver.getName() + ")... Node: " + latestVisitedNodesCount);
+                }
             }
 
             @Override
             protected void done() {
                 try {
-                    currentSolution = get(); // Dapatkan hasil dari doInBackground
-                    displaySolution(currentSolution); // Panggil displaySolution untuk memproses hasil
+                    currentSolution = get();
+                    if (currentSolution != null) {
+                        displaySolution(currentSolution);
+                    } else {
+                        statusPanel.updateStatus("Solver tidak mengembalikan hasil solusi.");
+                         JOptionPane.showMessageDialog(frame, "Solver tidak mengembalikan hasil solusi.", "Hasil Tidak Valid", JOptionPane.WARNING_MESSAGE);
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    statusPanel.updateStatus("Proses penyelesaian (" + solver.getName() + ") dibatalkan.");
+                    System.err.println("Penyelesaian (" + solver.getName() + ") dibatalkan: " + e.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();
-                    statusPanel.updateStatus("Error saat menyelesaikan: " + e.getMessage());
-                    JOptionPane.showMessageDialog(frame, "Terjadi error saat menyelesaikan: " + e.getMessage(), "Error Penyelesaian", JOptionPane.ERROR_MESSAGE);
+                    statusPanel.updateStatus("Error saat menyelesaikan (" + solver.getName() + "): " + e.getClass().getSimpleName());
+                    JOptionPane.showMessageDialog(frame, "Terjadi error saat menyelesaikan (" + solver.getName() + "):\n" + e.getMessage(), "Error Penyelesaian", JOptionPane.ERROR_MESSAGE);
                 } finally {
-                    controlPanel.enableSolveButton(true); // Aktifkan kembali tombol solve
+                    controlPanel.enableSolveButton(true);
+                    controlPanel.enableLoadButton(true);
+                    if (solver != null) {
+                        // Bersihkan consumer untuk menghindari referensi yang tidak perlu
+                        solver.setProgressEventConsumer(null);
+                    }
+                    if (currentSolution != null && currentSolution.isSolved() && currentSolution.getMoves() != null && !currentSolution.getMoves().isEmpty()) {
+                        controlPanel.enableAnimateButton(true);
+                    } else {
+                        controlPanel.enableAnimateButton(false);
+                    }
                 }
             }
         };
-        worker.execute(); // Mulai SwingWorker
+        worker.execute();
     }
 
     /**
@@ -360,6 +389,7 @@ public class RushHourGUI {
         }
 
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new RushHourGUI();
             }

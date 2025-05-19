@@ -2,6 +2,7 @@ package model.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Piece {
     private char id;
@@ -102,5 +103,21 @@ public class Piece {
 
     public char getId() {
         return this.id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Piece piece = (Piece) o;
+        return id == piece.id &&
+               isPrimary == piece.isPrimary &&
+               orientation == piece.orientation &&
+               Objects.equals(positions, piece.positions); 
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, positions, orientation, isPrimary);
     }
 }

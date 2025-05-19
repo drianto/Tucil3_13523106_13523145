@@ -5,19 +5,18 @@ import java.util.List;
 import java.util.Objects;
 import model.core.Board;
 import model.core.Move;
-import model.core.Piece; // Ditambahkan untuk getSuccessors
 
 // GameState dibuat Comparable untuk digunakan dalam PriorityQueue pada UCS
 public class GameState implements Comparable<GameState> { // Ditambahkan Comparable
     private final int cost;
-    private Board board;
-    private List<Move> moves;
+    private final Board board;
+    private final List<Move> moves;
 
     // Constructor
     public GameState() {
         this.cost = 0;
-        this.board = null; // Atau papan default jika ada
-        this.moves = new ArrayList<>(); // Inisialisasi dengan daftar kosong
+        this.board = null;
+        this.moves = new ArrayList<>();
     }
 
     public GameState(int cost, Board board, List<Move> moves) {
@@ -30,28 +29,24 @@ public class GameState implements Comparable<GameState> { // Ditambahkan Compara
     public List<GameState> getSuccessors() {
         List<GameState> successors = new ArrayList<>();
         if (this.board == null) {
-            // Seharusnya tidak terjadi dalam alur normal jika GameState diinisialisasi dengan benar
+            System.err.println("Peringatan: Mencoba mendapatkan successor dari GameState dengan board null.");
             return successors;
         }
+
         List<Move> validMoves = this.board.getValidMoves();
 
         for (Move move : validMoves) {
-            // PENTING KRITIS: Board.clone() harus merupakan DEEP CLONE.
-            // Jika tidak, semua objek GameState akan berbagi dan memodifikasi objek Piece yang sama.
-            // Anda HARUS memastikan implementasi Board.clone() melakukan deep clone.
-            Board newBoard = this.board.clone();
-            Piece pieceToMove = newBoard.getPieceById(move.getPieceId());
+            Board newBoard = this.board.clone(); 
 
-            if (pieceToMove != null) {
-                // PENTING: newBoard.movePiece juga harus bekerja pada salinan bidak jika Piece.move() memodifikasi state.
-                // Jika Piece.move() mengembalikan Piece baru, itu lebih baik.
-                // Saat ini, Piece.move() memodifikasi posisi internal Piece.
-                boolean moveApplied = newBoard.movePiece(pieceToMove, move.getDirection());
-                if (moveApplied) { // Seharusnya selalu true jika getValidMoves benar
-                    List<Move> newMovesList = new ArrayList<>(this.moves);
-                    newMovesList.add(move);
-                    successors.add(new GameState(this.cost + 1, newBoard, newMovesList));
-                }
+            boolean moveApplied = newBoard.movePiece(move.getPieceId(), move.getDirection());
+
+            if (moveApplied) {
+                List<Move> newMovesList = new ArrayList<>(this.moves);
+                newMovesList.add(move);
+
+                successors.add(new GameState(this.cost + 1, newBoard, newMovesList));
+            } else {
+                System.err.println("Peringatan: Move yang dianggap valid (" + move.getPieceId() + " ke " + move.getDirection() + ") gagal diterapkan pada board kloningan.");
             }
         }
         return successors;
@@ -66,7 +61,7 @@ public class GameState implements Comparable<GameState> { // Ditambahkan Compara
     }
 
     public List<Move> getMoves() {
-        return this.moves;
+        return new ArrayList<>(this.moves);
     }
 
     public Board getBoard() {
@@ -82,13 +77,9 @@ public class GameState implements Comparable<GameState> { // Ditambahkan Compara
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameState gameState = (GameState) o;
-        // Untuk Set 'visited' pada UCS, kesetaraan papan adalah yang utama.
-        // Namun, equals() yang ada juga memeriksa 'moves'. Ini mungkin tidak ideal untuk 'visited'
-        // yang hanya peduli konfigurasi papan, tetapi baik untuk perbandingan GameState secara umum.
-        // Set 'visitedBoards' di UCSolver akan menggunakan Board.equals().
-        return cost == gameState.cost && // Biaya juga relevan untuk UCS jika kita memasukkan GameState ke Set
-               Objects.equals(board, gameState.board) &&
-               Objects.equals(moves, gameState.moves);
+        return cost == gameState.cost &&
+               Objects.equals(board, gameState.board) && 
+               Objects.equals(moves, gameState.moves); 
     }
 
     @Override
@@ -98,7 +89,8 @@ public class GameState implements Comparable<GameState> { // Ditambahkan Compara
 
     @Override
     public int compareTo(GameState other) {
-        // Membandingkan berdasarkan biaya (jumlah langkah)
+        // Membandingkan berdasarkan biaya (jumlah langkah) untuk PriorityQueue di UCS.
+        // Untuk A*, perbandingan harus berdasarkan f-cost (g-cost + h-cost).
         return Integer.compare(this.cost, other.cost);
     }
 }

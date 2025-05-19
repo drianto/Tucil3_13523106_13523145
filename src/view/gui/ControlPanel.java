@@ -131,6 +131,11 @@ public class ControlPanel extends JPanel {
         });
     }
 
+    // Metode untuk mengaktifkan/menonaktifkan tombol Muat Papan
+    public void enableLoadButton(boolean enable) {
+        loadButton.setEnabled(enable);
+    }
+
     // Metode untuk mengaktifkan/menonaktifkan tombol Selesaikan
     public void enableSolveButton(boolean enable) {
         solveButton.setEnabled(enable);

@@ -1,15 +1,17 @@
+// In src/controller/solver/UCSolver.java
 package controller.solver;
 
 import controller.SolutionResult;
 import java.util.ArrayList;
-import java.util.HashSet; // Diperlukan untuk Set visitedBoards dan reconstructBoardStates
-import java.util.List;  // Diperlukan untuk reconstructBoardStates
-import java.util.PriorityQueue; // Diperlukan untuk reconstructBoardStates
+import java.util.HashSet;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
 import model.GameState;
 import model.core.Board;
 import model.core.Move;
-import model.core.Piece;
+// Piece tidak perlu diimpor jika tidak digunakan langsung di sini
+// import model.core.Piece; 
 
 public class UCSolver extends RushHourSolver {
     public UCSolver(GameState initialState) {
@@ -21,12 +23,7 @@ public class UCSolver extends RushHourSolver {
         long startTime = System.nanoTime();
         this.visitedNodesCount = 0;
 
-        // PriorityQueue diurutkan berdasarkan GameState.cost (karena implementasi Comparable)
         PriorityQueue<GameState> frontier = new PriorityQueue<>();
-        
-        // Set untuk menyimpan konfigurasi papan yang sudah dikunjungi.
-        // PENTING KRITIS: Kelas Board HARUS memiliki implementasi equals() dan hashCode() yang benar
-        // berdasarkan konfigurasi bidaknya agar ini berfungsi dengan benar.
         Set<Board> visitedBoards = new HashSet<>();
 
         if (this.initialState == null || this.initialState.getBoard() == null) {
@@ -38,19 +35,35 @@ public class UCSolver extends RushHourSolver {
         frontier.add(this.initialState);
         visitedBoards.add(this.initialState.getBoard());
 
+        // --- AWAL Variabel untuk Kontrol Publikasi Progres ---
+        int nodesProcessedSinceLastPublish = 0;
+        final int PUBLISH_INTERVAL_NODES = 500; // Publikasikan progres setiap 500 node (bisa disesuaikan)
+        // --- AKHIR Variabel untuk Kontrol Publikasi Progres ---
+
         while (!frontier.isEmpty()) {
             GameState current = frontier.poll();
             this.visitedNodesCount++;
+            nodesProcessedSinceLastPublish++;
+
+            // --- AWAL Panggil Publikasi Progres ---
+            if (nodesProcessedSinceLastPublish >= PUBLISH_INTERVAL_NODES) {
+                publishVisitedNodesCount(); // Panggil metode dari RushHourSolver
+                nodesProcessedSinceLastPublish = 0; // Reset counter
+            }
+            // --- AKHIR Panggil Publikasi Progres ---
 
             if (current.isGoalState()) {
                 this.executionTime = System.nanoTime() - startTime;
+                // Pastikan progres terakhir dipublikasikan sebelum mengembalikan hasil
+                if (nodesProcessedSinceLastPublish > 0) {
+                    publishVisitedNodesCount();
+                }
                 List<Board> boardStatesPath = reconstructBoardStates(current);
                 return new SolutionResult(true, current.getMoves(), this.visitedNodesCount, this.executionTime, boardStatesPath);
             }
 
             List<GameState> successors = current.getSuccessors();
             for (GameState successor : successors) {
-                // Periksa apakah konfigurasi papan dari successor sudah pernah dikunjungi
                 if (!visitedBoards.contains(successor.getBoard())) {
                     visitedBoards.add(successor.getBoard());
                     frontier.add(successor);
@@ -58,44 +71,45 @@ public class UCSolver extends RushHourSolver {
             }
         }
 
-        // Jika loop selesai dan tidak ada solusi ditemukan
         this.executionTime = System.nanoTime() - startTime;
+        // Jika tidak ada solusi, pastikan progres terakhir juga dipublikasikan
+        if (nodesProcessedSinceLastPublish > 0) {
+            publishVisitedNodesCount();
+        }
         return new SolutionResult(false, new ArrayList<>(), this.visitedNodesCount, this.executionTime, new ArrayList<>());
     }
 
     private List<Board> reconstructBoardStates(GameState finalState) {
+        // ... (implementasi reconstructBoardStates tetap sama)
         List<Board> boardStatesPath = new ArrayList<>();
         List<Move> moves = finalState.getMoves();
         
         if (this.initialState == null || this.initialState.getBoard() == null) {
              System.err.println("UCSolver Error: Initial state or board is null during board state reconstruction.");
-            return boardStatesPath; // Kembalikan daftar kosong jika state awal tidak valid
+            return boardStatesPath; 
         }
 
-        // PENTING KRITIS: this.initialState.getBoard().clone() HARUS berupa DEEP CLONE.
         Board currentIterationBoard = this.initialState.getBoard().clone(); 
 
-        // Sesuai komentar di SolutionResult: boardStates[i] adalah keadaan SETELAH moves[i].
         for (Move move : moves) {
-            // PENTING KRITIS: currentIterationBoard.clone() HARUS berupa DEEP CLONE.
             Board nextBoardState = currentIterationBoard.clone(); 
-            Piece pieceToMove = nextBoardState.getPieceById(move.getPieceId());
-
-            if (pieceToMove != null) {
-                boolean success = nextBoardState.movePiece(pieceToMove, move.getDirection());
-                if(success){
-                    boardStatesPath.add(nextBoardState);
-                    currentIterationBoard = nextBoardState; // Perbarui currentIterationBoard untuk iterasi berikutnya
-                } else {
-                     System.err.println("UCSolver Warning: Failed to apply move during board state reconstruction. Move: " + move.getPieceId() + " " + move.getDirection());
-                     // Mungkin tambahkan state terakhir yang valid atau placeholder jika gagal
-                     boardStatesPath.add(currentIterationBoard.clone()); // Tambahkan state sebelum move yang gagal
-                }
+            // Piece pieceToMove = nextBoardState.getPieceById(move.getPieceId()); // Tidak perlu lagi jika movePiece terima ID
+            // if (pieceToMove != null) {
+            //     boolean success = nextBoardState.movePiece(pieceToMove, move.getDirection());
+            // ...
+            // Dengan asumsi movePiece menerima pieceId:
+            boolean success = nextBoardState.movePiece(move.getPieceId(), move.getDirection());
+            if(success){
+                boardStatesPath.add(nextBoardState);
+                currentIterationBoard = nextBoardState; 
             } else {
-                System.err.println("UCSolver Error in reconstructBoardStates: Piece with ID '" + move.getPieceId() + "' not found for move.");
-                // Tambahkan state terakhir yang valid sebagai placeholder
-                boardStatesPath.add(currentIterationBoard.clone());
+                 System.err.println("UCSolver Warning: Failed to apply move during board state reconstruction. Move: " + move.getPieceId() + " " + move.getDirection());
+                 boardStatesPath.add(currentIterationBoard.clone()); 
             }
+            // } else { // getPieceById tidak lagi dipanggil di sini
+            //     System.err.println("UCSolver Error in reconstructBoardStates: Piece with ID '" + move.getPieceId() + "' not found for move.");
+            //     boardStatesPath.add(currentIterationBoard.clone());
+            // }
         }
         return boardStatesPath;
     }

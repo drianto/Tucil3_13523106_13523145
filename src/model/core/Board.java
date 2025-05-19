@@ -17,25 +17,46 @@ public class Board {
         this.exitPosition = exitPosition;
     }
 
-    // public boolean movePiece(Piece piece, Direction direction) {
-        
-    // }
+    public boolean movePiece(Piece piece, Direction direction) {
+        if (piece == null) return false;
+        if (!piece.canMove(direction, this)) return false;
 
-    // public boolean isOccupied(Position position) {
+        piece.move(direction, this);
+        return true;
+    }
 
-    // }
+    public boolean isOccupied(Position position) {
+        for(int i = 0; i < pieces.size(); i++) {
+            for(int j = 0; j < pieces.get(i).getPositions().size(); j++) {
+                if (pieces.get(i).getPositions().get(j).getX() == position.getX() && pieces.get(i).getPositions().get(j).getY() == position.getY()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }   
 
-    // public boolean isPrimaryPieceAtExit() {
-    //     List<Position> tempPositions = primaryPiece.getPositions();
-    //     for (int i = 0; i < tempPositions.size(); i++) {
-    //         if ()
-    //     }
-    //     return false;
-    // }
+    public boolean isPrimaryPieceAtExit() {
+        if (primaryPiece == null) return false;
+        for (Position p : primaryPiece.getPositions()) {
+            if (p.equals(exitPosition)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-    // public ArrayList<Move> getValidMoves() {
-        
-    // }
+    public ArrayList<Move> getValidMoves() {
+        ArrayList<Move> moves = new ArrayList<>();
+        for (Piece p : pieces) {
+            for (Direction d : Direction.values()) {
+                if (p.canMove(d, this)) {
+                    moves.add(new Move(p.getId(), d));
+                }
+            }
+        }
+        return moves;
+    }
 
     public Board clone() {
         Board newBoard = new Board(this.width, this.height, this.pieces, this.exitPosition);

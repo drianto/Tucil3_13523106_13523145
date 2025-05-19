@@ -1,39 +1,67 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import model.core.Board;
 import model.core.Move;
 
-import java.util.List;
-
-public class GameState {
+// GameState dibuat Comparable untuk digunakan dalam PriorityQueue pada UCS
+public class GameState implements Comparable<GameState> { // Ditambahkan Comparable
     private final int cost;
-     private Board board;
-     private List<Move> moves; 
+    private final Board board;
+    private final List<Move> moves;
 
-     // Constructor
+    // Constructor
     public GameState() {
         this.cost = 0;
         this.board = null;
-        this.moves = null;
+        this.moves = new ArrayList<>();
     }
 
-    public GameState(int cost, Board board, List<Move> moves) { // Board board, List<Move> moves
+    public GameState(int cost, Board board, List<Move> moves) {
         this.cost = cost;
         this.board = board;
         this.moves = moves;
     }
 
-     // Methods
+    // Methods
     public List<GameState> getSuccessors() {
-        return null;
-    }    
+        List<GameState> successors = new ArrayList<>();
+        if (this.board == null) {
+            System.err.println("Peringatan: Mencoba mendapatkan successor dari GameState dengan board null.");
+            return successors;
+        }
+
+        List<Move> validMoves = this.board.getValidMoves();
+
+        for (Move move : validMoves) {
+            Board newBoard = this.board.clone(); 
+
+            boolean moveApplied = newBoard.movePiece(move.getPieceId(), move.getDirection());
+
+            if (moveApplied) {
+                List<Move> newMovesList = new ArrayList<>(this.moves);
+                newMovesList.add(move);
+
+                successors.add(new GameState(this.cost + 1, newBoard, newMovesList));
+            } else {
+                System.err.println("Peringatan: Move yang dianggap valid (" + move.getPieceId() + " ke " + move.getDirection() + ") gagal diterapkan pada board kloningan.");
+            }
+        }
+        return successors;
+    }
 
     public Boolean isGoalState() {
-        return false;
+        if (this.board == null) {
+            return false;
+        }
+        // Memanfaatkan metode yang sudah ada di Board.java
+        return this.board.isPrimaryPieceAtExit();
     }
 
     public List<Move> getMoves() {
-        return this.moves;
+        return new ArrayList<>(this.moves);
     }
 
     public Board getBoard() {
@@ -46,11 +74,23 @@ public class GameState {
 
     @Override
     public boolean equals(Object o) {
-        return true;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameState gameState = (GameState) o;
+        return cost == gameState.cost &&
+               Objects.equals(board, gameState.board) && 
+               Objects.equals(moves, gameState.moves); 
     }
 
     @Override
     public int hashCode() {
-        return -1;
+        return Objects.hash(cost, board, moves);
     }
- }
+
+    @Override
+    public int compareTo(GameState other) {
+        // Membandingkan berdasarkan biaya (jumlah langkah) untuk PriorityQueue di UCS.
+        // Untuk A*, perbandingan harus berdasarkan f-cost (g-cost + h-cost).
+        return Integer.compare(this.cost, other.cost);
+    }
+}

@@ -1,0 +1,107 @@
+# Compiled Java class files
+**/*.class
+
+# Log files
+*.log
+*.log.*
+
+# Package files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Virtual machine crash logs (e.g., hs_err_pid*)
+hs_err_pid*
+
+# Build tool specific folders and files
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# Gradle
+.gradle/
+build/
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# IntelliJ IDEA specific files
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+# IntelliJ IDEA Playframework specific files
+/*_NON_PROJECT_FILES*/
+/*_RUN_CONFIGURATION_ENABLED_OFFLINE_MODE*/
+
+# Eclipse specific files
+.classpath
+.project
+.settings/
+bin/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.buildpath
+
+# NetBeans specific files
+nbproject/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+build.xml
+nb-configuration.xml
+nbactions.xml
+
+# Visual Studio Code specific files
+.vscode/
+*.code-workspace
+
+# OS generated files
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+# Linux
+*~
+
+# User-specific files (if any, add them here)
+# local.properties
+# *.env
+
+# Javadoc output directory (if generated and not committed)
+# javadoc/
+# docs/api/
+
+# Other temporary files
+*.tmp
+*.temp
+
+# Specific to some Java GUI builders
+.form
+
+# Test results
+# **/test-results/
+# **/build/reports/
+
+# Secrets or sensitive configuration (should ideally be managed outside the repo)
+# secrets.properties
+# .env.local

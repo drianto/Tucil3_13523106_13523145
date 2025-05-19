@@ -1,17 +1,23 @@
 package controller.heuristic;
 
+import model.GameState;
+
 public class ManhattanDistance implements Heuristic{
      // Fields
     
      // Constructor
     public ManhattanDistance() {
-        
+     
     }
 
+    // Methods
     @Override
-    public void calculate(GameState gameState){
-          
+    public int calculate(GameState gameState){
+        return 0;
     }
-     // Methods
     
+    @Override 
+    public String getName() {
+        return "Manhattan Distance Heuristic";
+    }
 }

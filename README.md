@@ -20,37 +20,28 @@ Program ini menerima masukan berupa konfigurasi awal papan permainan Rush Hour d
 ---
 
 ## Cara Kompilasi Program
-<!-- 1. Pastikan [Requirement Program](#requirement-program-dan-instalasi) telah terinstal
+1. Pastikan [Requirement Program](#requirement-program-dan-instalasi) telah terinstal
 2. Buka teminal
-3. Pastikan berada dalam directory Tucil2_13523038_13523106
+3. Pastikan berada dalam directory Tucil3_13523106_13523145
 4. Jalankan command berikut
 ```sh
-g++ -std=c++17 src/main.cpp src/Image.cpp src/QuadTree.cpp src/IOHandler.cpp src/MakeFrame.cpp src/MakeGif.cpp -o bin/main -lm
-``` -->
+cd src
+javac RushHourMain.java
+```
 
 ---
 
 ## Cara Menjalankan Program
-<!-- 1. Jalankan program dengan lakukan command berikut 
+1. Jalankan program dengan lakukan command berikut 
 Untuk Windows:
 ```sh
-./bin/main.exe
+java bin/RushHourMain
 ```
 Untuk Linux:
 ```sh
-./bin/main
+java bin/RushHourMain
 ```
-2. Ikuti alur input program berupa berikut:
-  1. Masukkan alamat absolut gambar yang akan dikompresi
-  2. Metode perhitungan error (1. Variance, 2. MAD, 3. MPD, 4. Entropy, 5. SSIM).
-  3. Threshold (pastikan range nilai sesuai dengan metode yang dipilih).
-  4. Ukuran blok minimum.
-  5. Mode target persentase kompresi (0.0 hingga 1.0, 0: menonaktifkan)
-     - Jika diaktifkan, threshold akan disesuaikan secara otomatis.
-  6. Alamat absolut gambar hasil kompresi.
-  7. Alamat absolut gif (opsional, kosongkan jika tidak ingin membuat gif).
-
-3. Program memroses input, lalu memberi output statistik dan juga gambar hasil kompres (dan gif jika memasukkan alamatnya) di directory sesuai dengan alamat yang telah anda masukkan. -->
+2. 
 ---
 
 ##  Authors:

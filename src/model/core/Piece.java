@@ -11,7 +11,11 @@ public class Piece {
 
     public Piece(char id, ArrayList<Position> positions, Orientation orientation, boolean isPrimary) {
         this.id = id;
-        this.positions = positions;
+        // Create a deep copy of the positions to avoid external modification
+        this.positions = new ArrayList<>();
+        for (Position p : positions) {
+            this.positions.add(new Position(p.getX(), p.getY()));
+        }
         this.orientation = orientation;
         this.isPrimary = isPrimary;
     }
@@ -75,6 +79,14 @@ public class Piece {
         }
     }
 
+    @Override
+    public Piece clone() {
+        ArrayList<Position> positionsCopy = new ArrayList<>();
+        for (Position p : this.positions) {
+            positionsCopy.add(new Position(p.getX(), p.getY()));
+        }
+        return new Piece(this.id, positionsCopy, this.orientation, this.isPrimary);
+    }
 
     public List<Position> getPositions() {
         return this.positions;

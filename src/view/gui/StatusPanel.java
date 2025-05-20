@@ -61,7 +61,7 @@ public class StatusPanel extends JPanel {
      */
     public void updateStatistics(SolutionResult result) {
         if (result != null) {
-            timeLabel.setText("Waktu Eksekusi: " + result.getExecutionTime() + " ms");
+            timeLabel.setText("Waktu Eksekusi: " + result.getExecutionTime() / 1_000_000 + " ms");
             nodesLabel.setText("Node Dikunjungi: " + result.getVisitedNodesCount());
             if (result.isSolved() && result.getMoves() != null) {
                 movesLabel.setText("Langkah: " + result.getMoves().size());

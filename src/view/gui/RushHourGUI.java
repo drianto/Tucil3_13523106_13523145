@@ -129,13 +129,13 @@ public class RushHourGUI {
         Heuristic heuristic = null;
         if (heuristicName != null && controlPanel.isHeuristicEnabled()) {
             heuristic = createHeuristic(heuristicName);
-             if (heuristic == null && (algorithmName.equals("A*") || algorithmName.equals("Greedy BFS") || algorithmName.equals("Beam Search"))) {
+             if (heuristic == null && (algorithmName.equals("A*") || algorithmName.equals("Greedy BFS") || algorithmName.equals("Beam Search (10 beam width)"))) {
                 JOptionPane.showMessageDialog(frame, "Heuristik '" + heuristicName + "' tidak dikenal.", "Error Heuristik", JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }
 
-        if (heuristic == null && (algorithmName.equals("A*") || algorithmName.equals("Greedy BFS") || algorithmName.equals("Beam Search"))) {
+        if (heuristic == null && (algorithmName.equals("A*") || algorithmName.equals("Greedy BFS") || algorithmName.equals("Beam Search (10 beam width)"))) {
             JOptionPane.showMessageDialog(frame, "Algoritma " + algorithmName + " memerlukan heuristik. Silakan pilih satu.", "Heuristik Diperlukan", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -198,9 +198,8 @@ public class RushHourGUI {
             case "Greedy BFS" -> {
                 return new GreedyBestFirstSearchSolver(initialState, heuristic);
             }
-            case "Beam Search" -> {
-                // BeamSearchSolver mungkin memerlukan parameter beamWidth, gunakan default untuk saat ini
-                return new BeamSearchSolver(initialState, heuristic /*, defaultBeamWidth */);
+            case "Beam Search (10 beam width)" -> {
+                return new BeamSearchSolver(initialState, heuristic);
             }
             default -> {
                 System.err.println("Algoritma tidak dikenal: " + algorithmName);

@@ -24,7 +24,7 @@ public class ControlPanel extends JPanel {
 
     private void initializeComponents() {
         // Inisialisasi JComboBox untuk Algoritma
-        String[] algorithms = {"UCS", "A*", "Greedy BFS", "Beam Search"}; // Sesuaikan dengan solver yang ada
+        String[] algorithms = {"UCS", "A*", "Greedy BFS", "Beam Search (10 beam width)"}; // Sesuaikan dengan solver yang ada
         algorithmSelector = new JComboBox<>(algorithms);
         algorithmSelector.setToolTipText("Pilih algoritma pencarian");
 
@@ -113,7 +113,7 @@ public class ControlPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String selectedAlgorithm = getSelectedAlgorithm();
                 // Aktifkan/Nonaktifkan pemilihan heuristik berdasarkan algoritma
-                if ("A*".equals(selectedAlgorithm) || "Greedy BFS".equals(selectedAlgorithm) || "Beam Search".equals(selectedAlgorithm)) {
+                if ("A*".equals(selectedAlgorithm) || "Greedy BFS".equals(selectedAlgorithm) || "Beam Search (10 beam width)".equals(selectedAlgorithm)) {
                     heuristicSelector.setEnabled(true);
                 } else {
                     heuristicSelector.setEnabled(false);

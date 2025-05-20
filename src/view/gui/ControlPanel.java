@@ -29,7 +29,7 @@ public class ControlPanel extends JPanel {
         algorithmSelector.setToolTipText("Pilih algoritma pencarian");
 
         // Inisialisasi JComboBox untuk Heuristik
-        String[] heuristics = {"Manhattan Distance", "Blocking Pieces", "Combined"}; // Sesuaikan dengan heuristik yang ada
+        String[] heuristics = {"Manhattan Distance", "Blocking Pieces"}; // Sesuaikan dengan heuristik yang ada
         heuristicSelector = new JComboBox<>(heuristics);
         heuristicSelector.setToolTipText("Pilih heuristik (jika diperlukan oleh algoritma)");
         heuristicSelector.setEnabled(false); // Awalnya nonaktif

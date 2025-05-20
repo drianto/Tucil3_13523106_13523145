@@ -164,14 +164,6 @@ public class RushHourGUI {
             case "Blocking Pieces" -> {
                 return new BlockingPiecesHeuristic();
             }
-            case "Combined" -> {
-                // Untuk CombinedHeuristic, mungkin perlu setup lebih lanjut atau default
-                CombinedHeuristic ch = new CombinedHeuristic();
-                // Contoh: ch.addHeuristic(new ManhattanDistance(), 0.5); // Ini perlu implementasi di CombinedHeuristic
-                // ch.addHeuristic(new BlockingPiecesHeuristic(), 0.5);
-                // JOptionPane.showMessageDialog(frame, "CombinedHeuristic dipilih, komponennya belum dapat dikonfigurasi via GUI.", "Info Heuristik", JOptionPane.INFORMATION_MESSAGE);
-                return ch; // Akan menggunakan implementasi default/kosong dari CombinedHeuristic jika tidak ada komponen
-            }
             default -> {
                 System.err.println("Heuristik tidak dikenal: " + heuristicName);
                 return null;

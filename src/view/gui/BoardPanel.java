@@ -184,10 +184,6 @@ public class BoardPanel extends JPanel {
 		}
 	}
 
-	/**
-	 * Menggambar karakter 'K' yang menunjukkan pintu keluar.
-	 * Karakter 'K' digambar di tepi grid, di luar sel terakhir tempat mobil 'P' bisa keluar.
-	 */
 	private void drawExit(Graphics2D g2d, int offsetX, int offsetY) {
 		if (board == null || board.getExitPosition() == null) return;
 

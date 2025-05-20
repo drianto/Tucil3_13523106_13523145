@@ -39,7 +39,7 @@ public class StatusPanel extends JPanel {
 
     private JSeparator createVerticalSeparator() {
         JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
-        separator.setPreferredSize(new Dimension(2, 20)); // Atur ukuran separator
+        separator.setPreferredSize(new Dimension(2, 20));
         return separator;
     }
 

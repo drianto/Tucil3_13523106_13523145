@@ -25,7 +25,7 @@ public class ManhattanDistance implements Heuristic{
 
         if (pPos.isEmpty()) return 0; 
 
-        int result = 9999999;
+        int result = Integer.MAX_VALUE;
         for (Position p : pPos) {
             int distance = Math.abs(p.getX() - board.getExitPosition().getX()) + Math.abs(p.getY() - board.getExitPosition().getY());
             result = Math.min(result, distance);

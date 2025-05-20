@@ -26,7 +26,7 @@ public class GreedyBestFirstSearchSolver extends RushHourSolver{
         long startTime = System.nanoTime();
         this.visitedNodesCount = 0;
 
-        PriorityQueue<GameState> frontier = new PriorityQueue<>(Comparator.comparingInt(GameState::getfCost));
+        PriorityQueue<GameState> frontier = new PriorityQueue<>(Comparator.comparingInt(GameState::gethCost));
         Set<Board> visitedBoards = new HashSet<>();
 
         if (this.initialState == null || this.initialState.getBoard() == null) {

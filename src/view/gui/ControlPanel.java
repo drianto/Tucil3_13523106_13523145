@@ -7,169 +7,149 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class ControlPanel extends JPanel {
-    private JComboBox<String> algorithmSelector;
-    private JComboBox<String> heuristicSelector;
-    private JButton loadButton;
-    private JButton solveButton;
-    private JButton animateButton;
-    private JSlider animationSpeedSlider;
-    private final RushHourGUI parent;
+	private JComboBox<String> algorithmSelector;
+	private JComboBox<String> heuristicSelector;
+	private JButton loadButton;
+	private JButton solveButton;
+	private JButton animateButton;
+	private JSlider animationSpeedSlider;
+	private final RushHourGUI parent;
 
-    public ControlPanel(RushHourGUI parent) {
-        this.parent = parent;
-        setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10)); // Layout dengan sedikit padding
-        initializeComponents();
-        addListeners();
-    }
+	public ControlPanel(RushHourGUI parent) {
+		this.parent = parent;
+		setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+		initializeComponents();
+		addListeners();
+	}
 
-    private void initializeComponents() {
-        // Inisialisasi JComboBox untuk Algoritma
-        String[] algorithms = {"UCS", "A*", "Greedy BFS", "Beam Search (10 beam width)"}; // Sesuaikan dengan solver yang ada
-        algorithmSelector = new JComboBox<>(algorithms);
-        algorithmSelector.setToolTipText("Pilih algoritma pencarian");
+	private void initializeComponents() {
+		String[] algorithms = {"UCS", "A*", "Greedy BFS", "Beam Search (10 beam width)"};
+		algorithmSelector = new JComboBox<>(algorithms);
+		algorithmSelector.setToolTipText("Pilih algoritma pencarian");
 
-        // Inisialisasi JComboBox untuk Heuristik
-        String[] heuristics = {"Manhattan Distance", "Blocking Pieces"}; // Sesuaikan dengan heuristik yang ada
-        heuristicSelector = new JComboBox<>(heuristics);
-        heuristicSelector.setToolTipText("Pilih heuristik (jika diperlukan oleh algoritma)");
-        heuristicSelector.setEnabled(false); // Awalnya nonaktif
+		String[] heuristics = {"Manhattan Distance", "Blocking Pieces"};
+		heuristicSelector = new JComboBox<>(heuristics);
+		heuristicSelector.setToolTipText("Pilih heuristik (jika diperlukan oleh algoritma)");
+		heuristicSelector.setEnabled(false);
 
-        // Inisialisasi JButton
-        loadButton = new JButton("Muat Papan");
-        loadButton.setToolTipText("Muat konfigurasi papan dari file .txt");
+		loadButton = new JButton("Muat Papan");
+		loadButton.setToolTipText("Muat konfigurasi papan dari file .txt");
 
-        solveButton = new JButton("Selesaikan");
-        solveButton.setToolTipText("Cari solusi untuk papan yang dimuat");
-        solveButton.setEnabled(false); // Awalnya nonaktif sampai papan dimuat
+		solveButton = new JButton("Selesaikan");
+		solveButton.setToolTipText("Cari solusi untuk papan yang dimuat");
+		solveButton.setEnabled(false);
 
-        animateButton = new JButton("Animasi");
-        animateButton.setToolTipText("Animaskan langkah-langkah solusi");
-        animateButton.setEnabled(false); // Awalnya nonaktif sampai solusi ditemukan
+		animateButton = new JButton("Animasi");
+		animateButton.setToolTipText("Animaskan langkah-langkah solusi");
+		animateButton.setEnabled(false);
 
-        // Inisialisasi JSlider untuk Kecepatan Animasi
-        animationSpeedSlider = new JSlider(JSlider.HORIZONTAL, 100, 2000, 500); // min, max (ms), initial (ms)
-        animationSpeedSlider.setMajorTickSpacing(500);
-        animationSpeedSlider.setMinorTickSpacing(100);
-        animationSpeedSlider.setPaintTicks(true);
-        animationSpeedSlider.setPaintLabels(true);
-        animationSpeedSlider.setToolTipText("Kecepatan animasi (jeda dalam milidetik)");
-        animationSpeedSlider.setEnabled(false); // Awalnya nonaktif
+		animationSpeedSlider = new JSlider(JSlider.HORIZONTAL, 100, 2000, 500);
+		animationSpeedSlider.setMajorTickSpacing(500);
+		animationSpeedSlider.setMinorTickSpacing(100);
+		animationSpeedSlider.setPaintTicks(true);
+		animationSpeedSlider.setPaintLabels(true);
+		animationSpeedSlider.setToolTipText("Kecepatan animasi (jeda dalam milidetik)");
+		animationSpeedSlider.setEnabled(false);
 
-        // Menambahkan komponen ke panel
-        add(new JLabel("Algoritma:"));
-        add(algorithmSelector);
-        add(new JLabel("Heuristik:"));
-        add(heuristicSelector);
-        add(loadButton);
-        add(solveButton);
-        add(animateButton);
-        add(new JLabel("Kecepatan Animasi (ms):"));
-        add(animationSpeedSlider);
-    }
+		add(new JLabel("Algoritma:"));
+		add(algorithmSelector);
+		add(new JLabel("Heuristik:"));
+		add(heuristicSelector);
+		add(loadButton);
+		add(solveButton);
+		add(animateButton);
+		add(new JLabel("Kecepatan Animasi (ms):"));
+		add(animationSpeedSlider);
+	}
 
-    private void addListeners() {
-        // Listener untuk tombol Muat Papan
-        loadButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                // Atur direktori awal ke direktori kerja proyek atau folder tes spesifik
-                fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-                fileChooser.setDialogTitle("Pilih File Papan Rush Hour (.txt)");
-                fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("File Teks (*.txt)", "txt"));
-                int returnValue = fileChooser.showOpenDialog(parent.getFrame()); // Gunakan frame utama sebagai parent
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    if (parent != null) {
-                        parent.loadBoard(selectedFile.getAbsolutePath());
-                    }
-                }
-            }
-        });
+	private void addListeners() {
+		loadButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				fileChooser.setDialogTitle("Pilih File Papan Rush Hour (.txt)");
+				fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("File Teks (*.txt)", "txt"));
+				int returnValue = fileChooser.showOpenDialog(parent.getFrame());
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					if (parent != null) {
+						parent.loadBoard(selectedFile.getAbsolutePath());
+					}
+				}
+			}
+		});
 
-        // Listener untuk tombol Selesaikan
-        solveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (parent != null) {
-                    parent.initiateSolveProcess(); // Panggil metode di RushHourGUI untuk memulai penyelesaian
-                }
-            }
-        });
+		solveButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (parent != null) {
+					parent.initiateSolveProcess();
+				}
+			}
+		});
 
-        // Listener untuk tombol Animasi
-        animateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (parent != null) {
-                    parent.animateSolution(); // Panggil metode di RushHourGUI untuk memulai animasi
-                }
-            }
-        });
+		animateButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (parent != null) {
+					parent.animateSolution();
+				}
+			}
+		});
 
-        // Listener untuk pemilihan Algoritma
-        algorithmSelector.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedAlgorithm = getSelectedAlgorithm();
-                // Aktifkan/Nonaktifkan pemilihan heuristik berdasarkan algoritma
-                if ("A*".equals(selectedAlgorithm) || "Greedy BFS".equals(selectedAlgorithm) || "Beam Search (10 beam width)".equals(selectedAlgorithm)) {
-                    heuristicSelector.setEnabled(true);
-                } else {
-                    heuristicSelector.setEnabled(false);
-                    heuristicSelector.setSelectedIndex(-1); // Kosongkan pilihan jika nonaktif
-                }
-            }
-        });
+		algorithmSelector.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String selectedAlgorithm = getSelectedAlgorithm();
+				if ("A*".equals(selectedAlgorithm) || "Greedy BFS".equals(selectedAlgorithm) || "Beam Search (10 beam width)".equals(selectedAlgorithm)) {
+					heuristicSelector.setEnabled(true);
+				} else {
+					heuristicSelector.setEnabled(false);
+					heuristicSelector.setSelectedIndex(-1);
+				}
+			}
+		});
 
-        // Listener untuk JSlider Kecepatan Animasi
-        animationSpeedSlider.addChangeListener(e -> {
-            // Hanya perbarui kecepatan jika pengguna selesai menyesuaikan slider
-            if (!animationSpeedSlider.getValueIsAdjusting() && parent != null) {
-                parent.setAnimationSpeed(getAnimationSpeed());
-            }
-        });
-    }
+		animationSpeedSlider.addChangeListener(e -> {
+			if (!animationSpeedSlider.getValueIsAdjusting() && parent != null) {
+				parent.setAnimationSpeed(getAnimationSpeed());
+			}
+		});
+	}
 
-    // Metode untuk mengaktifkan/menonaktifkan tombol Muat Papan
-    public void enableLoadButton(boolean enable) {
-        loadButton.setEnabled(enable);
-    }
+	public void enableLoadButton(boolean enable) {
+		loadButton.setEnabled(enable);
+	}
 
-    // Metode untuk mengaktifkan/menonaktifkan tombol Selesaikan
-    public void enableSolveButton(boolean enable) {
-        solveButton.setEnabled(enable);
-    }
+	public void enableSolveButton(boolean enable) {
+		solveButton.setEnabled(enable);
+	}
 
-    // Metode untuk mengaktifkan/menonaktifkan tombol Animasi dan slider kecepatan
-    public void enableAnimateButton(boolean enable) {
-        animateButton.setEnabled(enable);
-        animationSpeedSlider.setEnabled(enable);
-    }
+	public void enableAnimateButton(boolean enable) {
+		animateButton.setEnabled(enable);
+		animationSpeedSlider.setEnabled(enable);
+	}
 
-    // Mendapatkan algoritma yang dipilih
-    public String getSelectedAlgorithm() {
-        if (algorithmSelector.getSelectedItem() != null) {
-            return (String) algorithmSelector.getSelectedItem();
-        }
-        return null;
-    }
+	public String getSelectedAlgorithm() {
+		if (algorithmSelector.getSelectedItem() != null) {
+			return (String) algorithmSelector.getSelectedItem();
+		}
+		return null;
+	}
 
-    // Mendapatkan heuristik yang dipilih
-    public String getSelectedHeuristic() {
-        if (heuristicSelector.getSelectedItem() != null && heuristicSelector.isEnabled()) {
-            return (String) heuristicSelector.getSelectedItem();
-        }
-        return null;
-    }
+	public String getSelectedHeuristic() {
+		if (heuristicSelector.getSelectedItem() != null && heuristicSelector.isEnabled()) {
+			return (String) heuristicSelector.getSelectedItem();
+		}
+		return null;
+	}
 
-    // Mendapatkan kecepatan animasi dari slider
-    public int getAnimationSpeed() {
-        return animationSpeedSlider.getValue();
-    }
+	public int getAnimationSpeed() {
+		return animationSpeedSlider.getValue();
+	}
 
-    // Memeriksa apakah pemilihan heuristik diaktifkan
-    public boolean isHeuristicEnabled() {
-        return heuristicSelector.isEnabled();
-    }
+	public boolean isHeuristicEnabled() {
+		return heuristicSelector.isEnabled();
+	}
 }

@@ -1,4 +1,3 @@
-// In src/controller/solver/UCSolver.java
 package controller.solver;
 
 import controller.SolutionResult;
@@ -10,8 +9,6 @@ import java.util.PriorityQueue;
 import java.util.Set;
 import model.GameState;
 import model.core.Board;
-// Piece tidak perlu diimpor jika tidak digunakan langsung di sini
-// import model.core.Piece; 
 
 public class UCSolver extends RushHourSolver {
 	public UCSolver(GameState initialState) {
@@ -35,26 +32,21 @@ public class UCSolver extends RushHourSolver {
 		frontier.add(this.initialState);
 		visitedBoards.add(this.initialState.getBoard());
 
-		// --- AWAL Variabel untuk Kontrol Publikasi Progres ---
 		int nodesProcessedSinceLastPublish = 0;
-		final int PUBLISH_INTERVAL_NODES = 500; // Publikasikan progres setiap 500 node (bisa disesuaikan)
-		// --- AKHIR Variabel untuk Kontrol Publikasi Progres ---
+		final int PUBLISH_INTERVAL_NODES = 500;
 
 		while (!frontier.isEmpty()) {
 			GameState current = frontier.poll();
 			this.visitedNodesCount++;
 			nodesProcessedSinceLastPublish++;
 
-			// --- AWAL Panggil Publikasi Progres ---
 			if (nodesProcessedSinceLastPublish >= PUBLISH_INTERVAL_NODES) {
-				publishVisitedNodesCount(); // Panggil metode dari RushHourSolver
-				nodesProcessedSinceLastPublish = 0; // Reset counter
+				publishVisitedNodesCount();
+				nodesProcessedSinceLastPublish = 0;
 			}
-			// --- AKHIR Panggil Publikasi Progres ---
 
 			if (current.isGoalState()) {
 				this.executionTime = System.nanoTime() - startTime;
-				// Pastikan progres terakhir dipublikasikan sebelum mengembalikan hasil
 				if (nodesProcessedSinceLastPublish > 0) {
 					publishVisitedNodesCount();
 				}
@@ -72,7 +64,6 @@ public class UCSolver extends RushHourSolver {
 		}
 
 		this.executionTime = System.nanoTime() - startTime;
-		// Jika tidak ada solusi, pastikan progres terakhir juga dipublikasikan
 		if (nodesProcessedSinceLastPublish > 0) {
 			publishVisitedNodesCount();
 		}

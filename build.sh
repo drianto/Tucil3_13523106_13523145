@@ -17,7 +17,7 @@ mkdir -p "$BIN_DIR"
 
 javac -d bin src/*.java src/controller/heuristic/*.java src/controller/solver/*.java src/controller/*.java src/model/core/*.java src/model/*.java src/utils/*.java src/view/gui/*.java
 
-jar cfe bin\RushHourSolver.jar RushHourMain -C bin .
+jar cfe bin/RushHourSolver.jar RushHourMain -C bin .
 
 cd "$BIN_DIR"
 find . -mindepth 1 -maxdepth 1 -not -name "$JAR_NAME" -exec rm -rf {} +

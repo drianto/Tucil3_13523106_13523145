@@ -11,28 +11,43 @@ public class StatusPanel extends JPanel {
     private final JLabel movesLabel;
 
     public StatusPanel() {
-        setLayout(new FlowLayout(FlowLayout.LEFT)); // Contoh layout, bisa disesuaikan
+        setLayout(new FlowLayout(FlowLayout.LEFT, 15, 5)); // Layout dengan padding
+        setBorder(BorderFactory.createEtchedBorder()); // Tambahkan border untuk visual
 
-        // Inisialisasi JLabel
+        // Inisialisasi JLabel dengan teks awal
         statusLabel = new JLabel("Status: Idle");
-        timeLabel = new JLabel("Time: - ms");
-        nodesLabel = new JLabel("Nodes Visited: -");
-        movesLabel = new JLabel("Moves: -");
+        statusLabel.setToolTipText("Status terkini dari aplikasi");
+
+        timeLabel = new JLabel("Waktu Eksekusi: - ms");
+        timeLabel.setToolTipText("Waktu yang dibutuhkan untuk mencari solusi");
+
+        nodesLabel = new JLabel("Node Dikunjungi: -");
+        nodesLabel.setToolTipText("Jumlah state/node yang dieksplorasi oleh solver");
+
+        movesLabel = new JLabel("Langkah: -");
+        movesLabel.setToolTipText("Jumlah langkah dalam solusi yang ditemukan");
 
         // Menambahkan JLabel ke panel
-        // Dengan menambahkan ke panel dan memodifikasinya di metode lain,
-        // field ini sekarang "digunakan".
         add(statusLabel);
-        add(new JSeparator(SwingConstants.VERTICAL)); // Pemisah visual opsional
-        add(timeLabel);
-        add(new JSeparator(SwingConstants.VERTICAL));
-        add(nodesLabel);
-        add(new JSeparator(SwingConstants.VERTICAL));
+        add(createVerticalSeparator());
         add(movesLabel);
+        add(createVerticalSeparator());
+        add(nodesLabel);
+        add(createVerticalSeparator());
+        add(timeLabel);
     }
 
+    private JSeparator createVerticalSeparator() {
+        JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
+        separator.setPreferredSize(new Dimension(2, 20));
+        return separator;
+    }
+
+    /**
+     * Memperbarui label status.
+     * @param status Pesan status baru.
+     */
     public void updateStatus(String status) {
-        // Sekarang statusLabel digunakan
         if (status != null && !status.isEmpty()) {
             statusLabel.setText("Status: " + status);
         } else {
@@ -40,34 +55,35 @@ public class StatusPanel extends JPanel {
         }
     }
 
+    /**
+     * Memperbarui label statistik berdasarkan SolutionResult.
+     * @param result Hasil solusi dari solver.
+     */
     public void updateStatistics(SolutionResult result) {
-        // Sekarang field label lainnya digunakan
         if (result != null) {
-            if (result.isSolved()) {
-                updateStatus("Solved!"); // Update status juga jika ada hasil
-                timeLabel.setText("Time: " + result.getExecutionTime() + " ms");
-                nodesLabel.setText("Nodes Visited: " + result.getVisitedNodesCount());
-                if (result.getMoves() != null) {
-                    movesLabel.setText("Moves: " + result.getMoves().size());
-                } else {
-                    movesLabel.setText("Moves: -");
-                }
-            } else {
-                updateStatus("Not Solved / No Solution Found.");
-                timeLabel.setText("Time: " + result.getExecutionTime() + " ms");
-                nodesLabel.setText("Nodes Visited: " + result.getVisitedNodesCount());
-                movesLabel.setText("Moves: -");
+            timeLabel.setText("Waktu Eksekusi: " + result.getExecutionTime() / 1_000_000 + " ms");
+            nodesLabel.setText("Node Dikunjungi: " + result.getVisitedNodesCount());
+            if (result.isSolved() && result.getMoves() != null) {
+                movesLabel.setText("Langkah: " + result.getMoves().size());
+            } else if (result.isSolved() && result.getMoves() == null) { // Solved tapi tidak ada langkah (misal, sudah di state akhir)
+                 movesLabel.setText("Langkah: 0");
+            }
+            else {
+                movesLabel.setText("Langkah: -");
             }
         } else {
             // Reset ke default jika result null
-            clear();
+            clearStatistics();
         }
     }
 
-    public void clear() {
+    /**
+     * Mengosongkan semua label statistik dan mengatur status ke Idle.
+     */
+    public void clearStatistics() {
         updateStatus("Idle"); // Atau status default lainnya
-        timeLabel.setText("Time: - ms");
-        nodesLabel.setText("Nodes Visited: -");
-        movesLabel.setText("Moves: -");
+        timeLabel.setText("Waktu Eksekusi: - ms");
+        nodesLabel.setText("Node Dikunjungi: -");
+        movesLabel.setText("Langkah: -");
     }
 }

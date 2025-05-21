@@ -21,8 +21,12 @@ Program ini menerima masukan berupa konfigurasi awal papan permainan Rush Hour d
 ## Cara Kompilasi Program
 1. Pastikan [Requirement Program](#requirement-program-dan-instalasi) telah terinstal
 2. Buka teminal
-3. Pastikan berada dalam directory Tucil3_13523106_13523145
-4. Jalankan command berikut
+3. Lakukan command berikut
+```sh
+git clone https://github.com/drianto/Tucil3_13523106_13523145.git
+```
+4. Pastikan berada dalam directory Tucil3_13523106_13523145
+5. Jalankan command berikut
 Untuk Windows:
 ```sh
 ./build.bat

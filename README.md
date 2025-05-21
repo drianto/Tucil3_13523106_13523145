@@ -13,9 +13,8 @@ Program ini menerima masukan berupa konfigurasi awal papan permainan Rush Hour d
 
 ## Requirement Program dan Instalasi
 * **Bahasa Pemrograman:** Java
-* **Kompiler/Interpreter:** JDK (Java Development Kit) versi 8 atau yang lebih baru (JDK 11, JDK 17).
+* **Kompiler/Interpreter:** JDK (Java Development Kit) versi 21 atau yang lebih baru.
 * **Sistem Operasi:** Windows atau Linux.
-<!-- * **Library Tambahan:** -->
 
 ---
 
@@ -24,25 +23,22 @@ Program ini menerima masukan berupa konfigurasi awal papan permainan Rush Hour d
 2. Buka teminal
 3. Pastikan berada dalam directory Tucil3_13523106_13523145
 4. Jalankan command berikut
+Untuk Windows:
 ```sh
-cd src
-javac RushHourMain.java
+./build.bat
+```
+Untuk Linux:
+```sh
+./build.sh
 ```
 
 ---
 
 ## Cara Menjalankan Program
 1. Jalankan program dengan lakukan command berikut 
-Untuk Windows:
 ```sh
-java bin/RushHourMain
+java -jar bin/RushHourSolver.jar
 ```
-Untuk Linux:
-```sh
-java bin/RushHourMain
-```
-2. 
----
 
 ##  Authors:
 <div align="center">

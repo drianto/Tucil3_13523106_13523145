@@ -1,10 +1,7 @@
 package utils;
 
-import controller.SolutionResult;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import model.core.Board;
 import model.core.Direction;
-import model.core.Move;
 import model.core.Orientation;
 import model.core.Piece;
 import model.core.Position;
@@ -64,7 +60,6 @@ public class FileHandler {
 				String dimLine = allFileLines.get(0);
 				if (dimLine.length() == 2 && Character.isDigit(dimLine.charAt(0)) && Character.isDigit(dimLine.charAt(1))) {
 					dimensions = new String[]{String.valueOf(dimLine.charAt(0)), String.valueOf(dimLine.charAt(1))};
-					System.out.println("Peringatan: Dimensi papan diparsing sebagai digit tunggal yang digabungkan (misalnya, '66'). Format yang lebih disukai adalah dengan spasi (misalnya, '6 6').");
 				} else {
 					System.err.println("Format dimensi papan tidak valid. Diharapkan 'Baris Kolom' (misalnya, '6 6'). Ditemukan: " + allFileLines.get(0));
 					return null;
@@ -85,7 +80,7 @@ public class FileHandler {
 			List<String> gridContentLines = new ArrayList<>();
 			int fileContentStartIndex = 2;
 
-			if (allFileLines.size() > fileContentStartIndex) {
+			if (allFileLinesOriginal.size() > fileContentStartIndex) {
 				String lineToTest = allFileLinesOriginal.get(fileContentStartIndex);
 				int kVisualIndex = -1;
 				int kCount = 0;
@@ -112,8 +107,8 @@ public class FileHandler {
 						}
 						exitPosition = new Position(kVisualIndex, -1); 
 						exitCol = kVisualIndex;
-						exitRow = -1; 
-						exitIsHorizontal = false; 
+						exitRow = -1;
+						exitIsHorizontal = false;
 						fileContentStartIndex++;
 					}
 				}
@@ -155,7 +150,7 @@ public class FileHandler {
 						exitPosition = new Position(kVisualIndex, numRowsA); 
 						exitCol = kVisualIndex;
 						exitRow = numRowsA;
-						exitIsHorizontal = false; 
+						exitIsHorizontal = false;
 					}
 				 }
 			}
@@ -170,21 +165,21 @@ public class FileHandler {
 			}
 			Map<Character, ArrayList<Position>> pieceCandidatePositions = new HashMap<>();
 
-			for (int r = 0; r < numRowsA; r++) { 
+			for (int r = 0; r < numRowsA; r++) {
 				String currentBoardLineOriginal = gridContentLines.get(r);
 				String lineForPieceParsing = currentBoardLineOriginal;
 
 				boolean currentRowHasHorizontalExit = false;
 				if (exitPosition == null) {
 					if (lineForPieceParsing.length() == numColsB + 1 && lineForPieceParsing.endsWith("K")) {
-						exitPosition = new Position(numColsB, r); 
+						exitPosition = new Position(numColsB, r);
 						exitRow = r; 
 						exitCol = numColsB; 
-						exitIsHorizontal = true; 
+						exitIsHorizontal = true;
 						lineForPieceParsing = lineForPieceParsing.substring(0, numColsB); 
 						currentRowHasHorizontalExit = true;
 					} else if (lineForPieceParsing.length() == numColsB + 1 && lineForPieceParsing.startsWith("K")) {
-						exitPosition = new Position(-1, r); 
+						exitPosition = new Position(-1, r);
 						exitRow = r; 
 						exitCol = -1; 
 						exitIsHorizontal = true; 
@@ -196,24 +191,28 @@ public class FileHandler {
 					return null;
 				}
 				
+				if (!currentRowHasHorizontalExit && lineForPieceParsing.length() != numColsB) {
+					if (lineForPieceParsing.startsWith(" ") && lineForPieceParsing.length() == numColsB + 1) {
+						lineForPieceParsing = lineForPieceParsing.substring(1);
+					} else {
+						String trimmedLine = lineForPieceParsing.trim();
+						if (trimmedLine.length() == numColsB) {
+							lineForPieceParsing = trimmedLine;
+						}
+					}
+				}
+
 				if (lineForPieceParsing.length() != numColsB) {
-					System.err.println("Error: Baris grid " + (r + 1) + " (\"" + currentBoardLineOriginal + "\") setelah proses K samping memiliki panjang " + lineForPieceParsing.length() + ", diharapkan " + numColsB + ".");
+					System.err.println("Error: Baris grid " + (r + 1) + " (\"" + currentBoardLineOriginal + "\") setelah proses K samping dan penyesuaian padding memiliki panjang " + lineForPieceParsing.length() + ", diharapkan " + numColsB + ".");
 					return null;
 				}
 
 				for (int c = 0; c < numColsB; c++) {
 					char cellChar = lineForPieceParsing.charAt(c);
 					if (cellChar == 'K') {
-						if (exitPosition == null) { 
-							if (r != 0 && r != numRowsA - 1) {
-								System.err.println("Error: Pintu Keluar 'K' vertikal di (" + c + "," + r + ") tidak berada di dinding atas atau bawah grid utama.");
-								return null;
-							}
-							exitPosition = new Position(c, r); 
-							exitRow = r; 
-							exitCol = c; 
-							exitIsHorizontal = false; 
-							gridForValidation[r][c] = '.'; 
+						if (exitPosition == null) {
+							System.err.println("Error: Karakter 'K' ditemukan di dalam sel grid (" + c + "," + r + ") yang tidak diproses sebagai pintu keluar tepi.");
+							return null;
 						} else {
 							System.err.println("Error: Lebih dari satu Pintu Keluar 'K' ditemukan (K sebelumnya dan K dalam sel grid).");
 							return null;
@@ -257,8 +256,7 @@ public class FileHandler {
 					}
 
 					if (pieceLength == 1) {
-						if(exitIsHorizontal) orientation = Orientation.HORIZONTAL;
-						else orientation = Orientation.VERTICAL;
+						orientation = exitIsHorizontal ? Orientation.HORIZONTAL : Orientation.VERTICAL;
 					} else if (allYSame && !allXSame) { 
 						orientation = Orientation.HORIZONTAL;
 						for (int i = 0; i < pieceLength - 1; i++) { 
@@ -300,7 +298,7 @@ public class FileHandler {
 
 			Orientation primaryOrientation = primaryPieceObj.getOrientation();
 
-			if (exitIsHorizontal) { 
+			if (exitIsHorizontal) {
 				if (primaryOrientation != Orientation.HORIZONTAL) {
 					System.err.println("Error: Pintu Keluar 'K' berada di dinding horizontal (kiri/kanan), tetapi Primary Piece 'P' ("+primaryPieceObj.getPositions()+") berorientasi vertikal.");
 					return null;
@@ -345,76 +343,5 @@ public class FileHandler {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	public void writeSolutionToFile(SolutionResult result, Board initialBoard, String solverName, String heuristicName, String path) {
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-			writer.write("Solver: " + (solverName != null ? solverName : "N/A") + "\n");
-			if (heuristicName != null && !heuristicName.isEmpty()) {
-				writer.write("Heuristic: " + heuristicName + "\n");
-			}
-			if (result != null) {
-				writer.write("Waktu Eksekusi (ms): " + result.getExecutionTime() + "\n");
-				writer.write("Node Dikunjungi: " + result.getVisitedNodesCount() + "\n");
-			} else {
-				 writer.write("Waktu Eksekusi (ms): N/A\n");
-				 writer.write("Node Dikunjungi: N/A\n");
-			}
-			writer.write("\n");
-
-			writer.write("Papan Awal\n");
-			writer.write(initialBoard != null ? initialBoard.toString() : "N/A\n");
-			writer.write("\n");
-
-			if (result == null) {
-				writer.write("Tidak ada hasil solusi (SolutionResult is null).\n");
-				System.out.println("Solution (null result) written to: " + path);
-				return;
-			}
-			
-			List<Move> moves = result.getMoves();
-			List<Board> boardStates = result.getBoardStates();
-
-			if (result.isSolved()) {
-				if (moves != null && !moves.isEmpty()) {
-					if (boardStates != null && boardStates.size() == moves.size()) {
-						for (int i = 0; i < moves.size(); i++) {
-							Move move = moves.get(i);
-							Board currentBoardState = boardStates.get(i);
-							String directionStr = directionToIndonesian.getOrDefault(move.getDirection(), move.getDirection().toString());
-
-							writer.write(String.format("Gerakan %d: %c-%s\n",
-									(i + 1),
-									move.getPieceId(),
-									directionStr));
-							writer.write(currentBoardState.toString());
-							writer.write("\n");
-						}
-					} else {
-						 for (int i = 0; i < moves.size(); i++) {
-							Move move = moves.get(i);
-							String directionStr = directionToIndonesian.getOrDefault(move.getDirection(), move.getDirection().toString());
-							writer.write(String.format("Gerakan %d: %c-%s\n",
-									(i + 1),
-									move.getPieceId(),
-									directionStr));
-							writer.write("Konfigurasi papan setelah gerakan ini tidak tersedia.\n\n");
-						}
-						if (boardStates == null) System.err.println("Peringatan: boardStates adalah null dalam SolutionResult.");
-						else System.err.println("Peringatan: Ukuran boardStates ("+boardStates.size()+") tidak cocok dengan ukuran moves ("+moves.size()+").");
-					}
-				} else { 
-					writer.write("Puzzle sudah terselesaikan pada konfigurasi awal atau tidak memerlukan langkah.\n");
-				}
-			} else {
-				writer.write("Solusi tidak ditemukan.\n");
-			}
-
-			System.out.println("Hasil solusi berhasil ditulis ke: " + path);
-
-		} catch (IOException e) {
-			System.err.println("Error menulis solusi ke file: " + e.getMessage());
-			e.printStackTrace();
-		}
 	}
 }

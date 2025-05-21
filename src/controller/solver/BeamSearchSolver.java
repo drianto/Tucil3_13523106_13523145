@@ -100,9 +100,6 @@ public class BeamSearchSolver extends RushHourSolver {
 				currentBeam.add(candidates.poll());
 				count++;
 			}
-
-			if (currentBeam.isEmpty() && !candidates.isEmpty()) {
-			}
 		}
 
 		this.executionTime = System.nanoTime() - startTime;
